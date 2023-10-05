@@ -22,7 +22,7 @@ view(data)
 ```{r}
 data%>%
   ggplot() +
-  geom_bar(mapping = aes(y = EVENT_TYPE))
+  geom_bar(mapping = aes(y = EVENT_TYPE), width = .5, fill = "blue")
 ```
 
 ### Interpretation:
@@ -39,7 +39,7 @@ data%>%
 
 ### Interpretation:
 
-The graph illustrates the number of fatalities in reported events per region. The majority of events are low-fatality.
+The graph illustrates the number of fatalities in reported events per region. The majority of events are low-fatality. The middle east displays a high density of incidents with less than 25 fatalities,whereas eastern africa is the only region that recorded an incident with over 100 fatalities.
 
 ## Visualization #3
 
@@ -66,4 +66,4 @@ ggplot(aes(x = DISORDER_TYPE, y = FATALITIES)) +
 
 ### Interpretation:
 
-The graph shows the number of fatalities by disorder type. Political violence labeled disorder has the most fatalities and the highest number of fatalities in a single event. 
+The graph shows the number of fatalities by disorder type. Political violence labeled disorder has the most fatalities and the highest number of fatalities in a single event.
