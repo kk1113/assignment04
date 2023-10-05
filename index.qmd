@@ -5,47 +5,32 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
-
 ```{r}
 library(tidyverse)
 library(readxl)
-data <- read_excel('/Users/santiagorodriguez/Desktop/Intro to data science/assignment04/Data/journalists_Sep22.xlsx')
+data <- read_excel("/Users/KyleK/Desktop/DS/assignment04/assignment04data.xlsx")
 
+view(data)
 #how to make it collaborative and not on my desktop
+#need connect dataset to URL? 
 ```
 
 # Assignment 04: Data Visualization, Quarto, and Git
 
 ## Visualization #1: count of events by event type
+
 ```{r}
 data%>%
   ggplot() +
   geom_bar(mapping = aes(y = EVENT_TYPE))
 ```
+
 ### Interpretation:
-The graph shows the number of events recorded in the dataset by event type. Protests are the most common event, with around 10000 events recorded, followed by violence against civilians, with over 2500 events recorded.  
+
+The graph shows the number of events recorded in the dataset by event type. Protests are the most common event, with around 10000 events recorded, followed by violence against civilians, with over 2500 events recorded.
 
 ## Visualization #2: Fatalities by Region
+
 ```{r}
 data%>%
   ggplot() +
@@ -53,13 +38,22 @@ data%>%
 ```
 
 ### Interpretation:
+
 The graph illustrates the number of fatalities in reported events per region. The majority of events are low-fatality.
 
 ## Visualization #3
 
+```{r}
+data |>
+ggplot(aes(x = YEAR, y = FATALITIES)) +
+  geom_line(color = "violet", size = 1.5, linetype = "dotted") +
+  theme_minimal() +
+  labs(x = "Year", y = "Fatalities", title = "Fatalities Over Time")
+```
+
 ### Interpretation:
 
-The graph shows...
+The graph shows the number of fatalities over time.
 
 ## Visualization #4
 
