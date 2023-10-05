@@ -29,7 +29,21 @@ data%>%
 
 The graph shows the number of events recorded in the dataset by event type. Protests are the most common event, with around 10000 events recorded, followed by violence against civilians, with over 2500 events recorded.
 
-## Visualization #2: Fatalities by Region
+## Visualization #2: Fatalities by Disorder Type
+
+```{r}
+data |>
+ggplot(aes(x = DISORDER_TYPE, y = FATALITIES, fill = EVENT_TYPE)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Disorder Type", y = "Number of Fatalities")
+```
+
+### Interpretation:
+
+The graph shows the number of fatalities by disorder type. Political violence labeled disorder has the most fatalities and the highest number of fatalities in a single event.
+
+## Visualization #3: Fatalities by Region
 
 ```{r}
 data%>%
@@ -41,7 +55,7 @@ data%>%
 
 The graph illustrates the number of fatalities in reported events per region. The majority of events are low-fatality. The middle east displays a high density of incidents with less than 25 fatalities,whereas eastern africa is the only region that recorded an incident with over 100 fatalities.
 
-## Visualization #3
+## Visualization #4
 
 ```{r}
 data |>
@@ -55,15 +69,9 @@ ggplot(aes(x = YEAR, y = FATALITIES, color = REGION)) +
 
 The graph shows the number of fatalities over time by region.
 
-## Visualization #4
-
 ```{r}
-data |>
-ggplot(aes(x = DISORDER_TYPE, y = FATALITIES)) +
-  geom_boxplot() +
-  labs(x = "Disorder Type", y = "Number of Fatalities")
+  ggplot(data, aes(x = YEAR, y = FATALITIES, fill = REGION)) +
+  geom_col()
+
+# Not sure why this graph looks so different from the geom_line graph... They should be similiar. 
 ```
-
-### Interpretation:
-
-The graph shows the number of fatalities by disorder type. Political violence labeled disorder has the most fatalities and the highest number of fatalities in a single event.
