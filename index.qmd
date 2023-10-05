@@ -45,18 +45,25 @@ The graph illustrates the number of fatalities in reported events per region. Th
 
 ```{r}
 data |>
-ggplot(aes(x = YEAR, y = FATALITIES)) +
-  geom_line(color = "violet", size = 1.5, linetype = "dotted") +
+ggplot(aes(x = YEAR, y = FATALITIES, color = REGION)) +
+  geom_line(size = 2.5, linetype = "solid") +
   theme_minimal() +
-  labs(x = "Year", y = "Fatalities", title = "Fatalities Over Time")
+  labs(x = "Year", y = "Fatalities", title = "Fatalities Over Time by Region", color = "Region")
 ```
 
 ### Interpretation:
 
-The graph shows the number of fatalities over time.
+The graph shows the number of fatalities over time by region.
 
 ## Visualization #4
 
+```{r}
+data |>
+ggplot(aes(x = DISORDER_TYPE, y = FATALITIES)) +
+  geom_boxplot() +
+  labs(x = "Disorder Type", y = "Number of Fatalities")
+```
+
 ### Interpretation:
 
-The graph shows...
+The graph shows the number of fatalities by disorder type. Political violence labeled disorder has the most fatalities and the highest number of fatalities in a single event. 
