@@ -77,6 +77,4 @@ The graph displays the fluctuations in fatalities per year in the Middle East, N
 ```{r}
   ggplot(data, aes(x = YEAR, y = FATALITIES, fill = REGION)) +
   geom_col()
-
-# Not sure why this graph looks so different from the geom_line graph... They should be similiar. 
 ```
