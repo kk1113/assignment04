@@ -22,7 +22,7 @@ view(data)
 data%>%
   ggplot() +
   geom_bar(mapping = aes(y = DISORDER_TYPE), width = .5, fill = "blue") +
-  labs(x = "Disorder Type", y = "Count")
+  labs(y = "Disorder Type", x = "Count")
 ```
 
 ### Interpretation:
@@ -66,6 +66,7 @@ data_filtered <- data_sum %>%
 data_filtered |>
   ggplot(aes(x = YEAR, y = Total_Fatalities, color = REGION)) +
   geom_line(size = 1.5, linetype = "solid") +
+  geom_text(aes(label = Total_Fatalities), vjust = -0.5, hjust = 0.5, size = 3) +
   theme_minimal() +
   labs(x = "Year", y = "Fatalities per year", title = "Fatalities per year by Region", color = "Region")
 
@@ -73,10 +74,3 @@ data_filtered |>
 
 ### Interpretation:
 The graph displays the fluctuations in fatalities per year in the Middle East, Northern Africa and Eastern Africa. All 3 regions had their deadliest years after 2015, although records for the Middle East prior to 2015 are absent from the data set. Northern Africa has the smallest peak out of all 3 regions, reaching 100 fatalities in 2019, whereas eastern Africa had relatively low fatalities up to 2020, and proceeded to peak at over 125 fatalities in 2022.
-
-```{r}
-  ggplot(data, aes(x = YEAR, y = FATALITIES, fill = REGION)) +
-  geom_col()
-
-# Not sure why this graph looks so different from the geom_line graph... They should be similiar. 
-```
