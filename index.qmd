@@ -11,8 +11,7 @@ library(readxl)
 data <- read_excel("/Users/KyleK/Desktop/DS/assignment04root/assignment04/Data/journalists_Sep22.xlsx")
 
 view(data)
-#how to make it collaborative and not on my desktop
-#need connect dataset to URL? 
+#dataset doesn't have a URL so the xlsx file must be downloaded.
 ```
 
 # Assignment 04: Data Visualization, Quarto, and Git
@@ -21,7 +20,7 @@ view(data)
 
 ```{r}
 library(ggplot2)
-# Calculate counts for each disorder type
+# Calculate counts for each disorder type.
 data_counts <- data %>%
   group_by(DISORDER_TYPE) %>%
   summarise(count = n())
@@ -35,7 +34,7 @@ data_counts %>%
     plot.subtitle = element_text(face = "italic")
   ) + 
   labs(title = "Number of Disorders by Type", subtitle = "1997 - 2023", y = "Count", x = "Disorder Type") +
-  xlim(0, 15000) #modified x-axis limits
+  xlim(0, 15000) #modified x-axis limits to fit count labels onto plot. 
 
 ```
 
@@ -46,12 +45,20 @@ The graph shows the number of events recorded in the dataset by event type. Demo
 ## Visualization #2: Fatalities by Disorder Type
 
 ```{r}
-data |>
-ggplot(aes(x = DISORDER_TYPE, y = FATALITIES, fill = EVENT_TYPE)) +
+# Calculate the sum of FATALITIES for each EVENT_TYPE and DISORDER_TYPE
+event_counts <- data |>
+  group_by(DISORDER_TYPE, EVENT_TYPE) |>
+  summarise(event_fat = sum(FATALITIES))
+
+event_counts |>
+  ggplot(aes(x = DISORDER_TYPE, y = event_fat, fill = EVENT_TYPE)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_text(aes(label = event_fat), position = position_stack(vjust = 0.5), size = 3, color = "black") + 
+  #labels showing the sum of FATALITIES for each EVENT_TYPE
   labs(title = "Number of Fatalities by Disorder Type", subtitle = "1997 - 2023", x = "Disorder Type", y = "Fatalities", fill = "Event Type") +
   theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
+
 ```
 
 ### Interpretation:
