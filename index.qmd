@@ -1,6 +1,8 @@
 ---
 title: "index"
-authors: "Kyle, Santiago"
+authors:
+  - name: "Kyle Kim" 
+  - name: "Santiago Rodriguez Bernal"
 format: html
 editor: visual
 ---
@@ -8,10 +10,10 @@ editor: visual
 ```{r, message= FALSE}
 library(tidyverse)
 library(readxl)
-data <- read_excel("/Users/KyleK/Desktop/DS/assignment04root/assignment04/Data/journalists_Sep22.xlsx")
+data <- read_excel("/Users/KyleK/Desktop/DS/assignment04root/assignment04/Data/Assignment04dataset.xlsx")
 
 view(data)
-#dataset doesn't have a URL so the xlsx file must be downloaded.
+#data set doesn't have a URL so the xlsx file must be downloaded from GitHub repo.
 ```
 
 # Assignment 04: Data Visualization, Quarto, and Git
@@ -27,11 +29,12 @@ data_counts <- data %>%
 
 data_counts %>%
   ggplot(aes(y = DISORDER_TYPE, x = count)) +
-  geom_bar(stat = "identity", width = 0.5, fill = "blue") +
+  geom_bar(stat = "identity", width = 0.8, fill = "blue") + 
+  #stat = "identity" asks R to use the y-value provided for the dependent variable.
   geom_text(aes(label = count), vjust = -0.1, hjust = -0.5, size = 3, color = "black") +
   theme(
-    plot.title = element_text(face = "bold"),
-    plot.subtitle = element_text(face = "italic")
+    plot.title = element_text(face = "bold"), #title bold
+    plot.subtitle = element_text(face = "italic") #subtitle italic
   ) + 
   labs(title = "Number of Disorders by Type", subtitle = "1997 - 2023", y = "Count", x = "Disorder Type") +
   xlim(0, 15000) #modified x-axis limits to fit count labels onto plot. 
@@ -44,7 +47,7 @@ Each of these instances involves journalists and media workers: journalists, med
 
 ## Visualization #2: Fatalities by Disorder Type
 
-```{r}
+```{r, message=FALSE}
 # Calculate the sum of FATALITIES for each EVENT_TYPE and DISORDER_TYPE
 event_counts <- data |>
   group_by(DISORDER_TYPE, EVENT_TYPE) |>
@@ -53,7 +56,7 @@ event_counts <- data |>
 event_counts |>
   ggplot(aes(x = DISORDER_TYPE, y = event_fat, fill = EVENT_TYPE)) +
   geom_col() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + #angled text to fix overcrowding
   geom_text(aes(label = event_fat), position = position_stack(vjust = 0.5), size = 3, color = "black") + 
   #labels showing the sum of FATALITIES for each EVENT_TYPE
   labs(title = "Number of Fatalities by Disorder Type", subtitle = "1997 - 2023", x = "Disorder Type", y = "Fatalities", fill = "Event Type") +
@@ -63,7 +66,7 @@ event_counts |>
 
 ### Interpretation:
 
-The data set also includes events, which are sub categories of disorders. This graph displays the number of fatalities by disorder type and their respective subcategories. Political violence is the type of disorder with the highest number of recorded fatalities, with explosions/remote violence and violence against civilians being the deadliest sub categories.
+This graphs shows which events that involved journalists and media workers were the deadliest. It shows the number of fatalities by disorder type and specifies the fatalities within each event type, which is a category of disorder. Political violence is the disorder type with the highest number of recorded fatalities. This column includes the two of the deadliest event types, explosions/remote violence and violence against civilians, with 1154 fatalities and 1010 fatalities, respectively. The demonstrations and political violence; demonstrations variables have the second and third most number of fatalities, respectively, recording under 300 deaths. The strategic developments variable recorded zero fatalities overall. 
 
 ## Visualization #3: Fatalities by Region
 
@@ -77,7 +80,7 @@ data%>%
 
 ### Interpretation:
 
-This graph illustrates the number of fatalities for each individual observation across different regions. The majority of observations are low-fatality incidents. The middle east displays a high density of incidents with less than 25 fatalities, whereas Eastern and Northern africa are the only regions where an incident with 100 or more fatalities took place.
+This graph presents the deadliest regions that involved journalists and media workers. It illustrates the number of fatalities for each individual observation across different regions. The majority of observations are lower-fatality incidents, recording 10 or fewer deaths. The middle east displays a high density of incidents with less than 25 fatalities, whereas Eastern and Northern Africa are the only regions where an incident with 100 or more fatalities took place.
 
 ## Visualization #4: Fatalities by Region Over a Period of Time
 
@@ -85,15 +88,17 @@ This graph illustrates the number of fatalities for each individual observation 
 data_sum <- data %>%
   group_by(YEAR, REGION) %>%
   summarize(Total_Fatalities = sum(FATALITIES))
+#calculate total fatalities by YEAR and REGION
 
 regions_to_include <- c("Eastern Africa", "Northern Africa", "Middle East", "South Asia")
 data_filtered <- data_sum %>%
   filter(REGION %in% regions_to_include)
+#filter select regions from data set to use
 
 data_filtered |>
   ggplot(aes(x = YEAR, y = Total_Fatalities, color = REGION)) +
   geom_line(size = 1.5, linetype = "solid") +
-  geom_text(aes(label = Total_Fatalities), vjust = -0.5, hjust = 0.5, size = 3) +
+  geom_text(aes(label = Total_Fatalities), vjust = -0.5, hjust = 0.5, size = 3) + #center data labels 
   theme_minimal() +
   labs(x = "Year", y = "Fatalities per Year", title = "Fatalities Over Time by Region", subtitle = "1997 - 2023", color = "Region") +
   theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
@@ -101,4 +106,4 @@ data_filtered |>
 
 ### Interpretation:
 
-The graph displays the fluctuations in fatalities per year in the Middle East, Northern Africa and Eastern Africa. All 3 regions had their deadliest years after 2015, although records for the Middle East prior to 2015 are absent from the data set. Northern Africa has the smallest peak out of all 3 regions, reaching 100 fatalities in 2019, whereas eastern Africa had relatively low fatalities up to 2020, and proceeded to peak at over 125 fatalities in 2022.
+The graph displays the total fatalities per year in Eastern Africa, Middle East, Northern Africa, and South Asia that resulted from disorders involving journalists and media workers. All four regions had their deadliest years after 2015, although records for the Middle East prior to 2015 are absent from the data set. Northern Africa has the smallest peak out of all four regions, reaching 100 fatalities in 2019, whereas eastern Africa had relatively low fatalities up to 2020, and proceeded to peak at over 125 fatalities in 2022.
