@@ -5,10 +5,10 @@ format: html
 editor: visual
 ---
 
-```{r}
+```{r, message= FALSE}
 library(tidyverse)
 library(readxl)
-data <- read_excel("/Users/KyleK/Desktop/DS/assignment04/assignment04data.xlsx")
+data <- read_excel("/Users/KyleK/Desktop/DS/assignment04root/assignment04/assignment04data.xlsx")
 
 view(data)
 #how to make it collaborative and not on my desktop
@@ -17,17 +17,19 @@ view(data)
 
 # Assignment 04: Data Visualization, Quarto, and Git
 
-## Visualization #1: count of events by event type
+## Visualization #1: Count of Events by Event Type
 
 ```{r}
-data%>%
+data |>
   ggplot() +
-  geom_bar(mapping = aes(y = EVENT_TYPE), width = .5, fill = "blue")
+  geom_bar(mapping = aes(y = DISORDER_TYPE), width = .5, fill = "blue") +
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic")) + 
+  labs(title = "Number of Disorders by Type", subtitle = "1997 - 2023", y = "Disorder Type", x = "Count")
 ```
 
 ### Interpretation:
 
-The graph shows the number of events recorded in the dataset by event type. Protests are the most common event, with around 10000 events recorded, followed by violence against civilians, with over 2500 events recorded.
+The graph shows the number of events recorded in the dataset by event type. Demonstrations are the most common event, with over 10000 instances recorded, followed by political violence, with over 4500 instances recorded.
 
 ## Visualization #2: Fatalities by Disorder Type
 
@@ -36,42 +38,48 @@ data |>
 ggplot(aes(x = DISORDER_TYPE, y = FATALITIES, fill = EVENT_TYPE)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Disorder Type", y = "Number of Fatalities")
+  labs(title = "Number of Fatalities by Disorder Type", subtitle = "1997 - 2023", x = "Disorder Type", y = "Fatalities", fill = "Event Type") +
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
 ```
 
 ### Interpretation:
 
-The graph shows the number of fatalities by disorder type. Political violence labeled disorder has the most fatalities and the highest number of fatalities in a single event.
+The data set also includes events, which are sub categories of disorders. This graph displays the number of fatalities by disorder type and their respective subcategories. Political violence is the type of disorder with the highest number of recorded fatalities, with explosions/remote violence and violence against civilians being the deadliest sub categories.
 
 ## Visualization #3: Fatalities by Region
 
 ```{r}
 data%>%
   ggplot() +
-  geom_point(mapping = aes(x=FATALITIES, y = REGION), color = "red", alpha = 0.1)
+  geom_point(mapping = aes(x=FATALITIES, y = REGION), color = "red", alpha = 0.5) +
+  labs(title = "Number of Fatalities by Region", subtitle = "1997 - 2023", x = "Fatalities", y = "Regions") +
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
 ```
 
 ### Interpretation:
 
-The graph illustrates the number of fatalities in reported events per region. The majority of events are low-fatality. The middle east displays a high density of incidents with less than 25 fatalities,whereas eastern africa is the only region that recorded an incident with over 100 fatalities.
+This graph illustrates the number of fatalities for each individual observation across different regions. The majority of observations are low-fatality incidents. The middle east displays a high density of incidents with less than 25 fatalities, whereas Eastern and Northern africa are the only regions where an incident with 100 or more fatalities took place.
 
-## Visualization #4
+## Visualization #4: Fatalities by Region Over a Period of Time
 
-```{r}
-data |>
-ggplot(aes(x = YEAR, y = FATALITIES, color = REGION)) +
-  geom_line(size = 2.5, linetype = "solid") +
+```{r, message= FALSE, warning= FALSE}
+data_sum <- data %>%
+  group_by(YEAR, REGION) %>%
+  summarize(Total_Fatalities = sum(FATALITIES))
+
+regions_to_include <- c("Eastern Africa", "Northern Africa", "Middle East", "South Asia")
+data_filtered <- data_sum %>%
+  filter(REGION %in% regions_to_include)
+
+data_filtered |>
+  ggplot(aes(x = YEAR, y = Total_Fatalities, color = REGION)) +
+  geom_line(size = 1.5, linetype = "solid") +
+  geom_text(aes(label = Total_Fatalities), vjust = -0.5, hjust = 0.5, size = 3) +
   theme_minimal() +
-  labs(x = "Year", y = "Fatalities", title = "Fatalities Over Time by Region", color = "Region")
+  labs(x = "Year", y = "Fatalities per Year", title = "Fatalities Over Time by Region", subtitle = "1997 - 2023", color = "Region") +
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
 ```
 
 ### Interpretation:
 
-The graph shows the number of fatalities over time by region.
-
-```{r}
-  ggplot(data, aes(x = YEAR, y = FATALITIES, fill = REGION)) +
-  geom_col()
-
-# Not sure why this graph looks so different from the geom_line graph... They should be similiar. 
-```
+The graph displays the fluctuations in fatalities per year in the Middle East, Northern Africa and Eastern Africa. All 3 regions had their deadliest years after 2015, although records for the Middle East prior to 2015 are absent from the data set. Northern Africa has the smallest peak out of all 3 regions, reaching 100 fatalities in 2019, whereas eastern Africa had relatively low fatalities up to 2020, and proceeded to peak at over 125 fatalities in 2022.
