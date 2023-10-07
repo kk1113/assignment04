@@ -5,7 +5,7 @@ format: html
 editor: visual
 ---
 
-```{r}
+```{r, message= FALSE}
 library(tidyverse)
 library(readxl)
 data <- read_excel("/Users/KyleK/Desktop/DS/assignment04root/assignment04/assignment04data.xlsx")
@@ -17,13 +17,14 @@ view(data)
 
 # Assignment 04: Data Visualization, Quarto, and Git
 
-## Visualization #1: count of events by event type
+## Visualization #1: Count of Events by Event Type
 
 ```{r}
-data%>%
+data |>
   ggplot() +
   geom_bar(mapping = aes(y = DISORDER_TYPE), width = .5, fill = "blue") +
-  labs(y = "Disorder Type", x = "Count")
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic")) + 
+  labs(title = "Number of Disorders by Type", subtitle = "1997 - 2023", y = "Disorder Type", x = "Count")
 ```
 
 ### Interpretation:
@@ -37,7 +38,8 @@ data |>
 ggplot(aes(x = DISORDER_TYPE, y = FATALITIES, fill = EVENT_TYPE)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Disorder Type", y = "Number of Fatalities")
+  labs(title = "Number of Fatalities by Disorder Type", subtitle = "1997 - 2023", x = "Disorder Type", y = "Fatalities", fill = "Event Type") +
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
 ```
 
 ### Interpretation:
@@ -49,21 +51,23 @@ The data set also includes events, which are sub categories of disorders. This g
 ```{r}
 data%>%
   ggplot() +
-  geom_point(mapping = aes(x=FATALITIES, y = REGION), color = "red", alpha = 0.1)
+  geom_point(mapping = aes(x=FATALITIES, y = REGION), color = "red", alpha = 0.5) +
+  labs(title = "Number of Fatalities by Region", subtitle = "1997 - 2023", x = "Fatalities", y = "Regions") +
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
 ```
 
 ### Interpretation:
 
 This graph illustrates the number of fatalities for each individual observation across different regions. The majority of observations are low-fatality incidents. The middle east displays a high density of incidents with less than 25 fatalities, whereas Eastern and Northern africa are the only regions where an incident with 100 or more fatalities took place.
 
-## Visualization #4
+## Visualization #4: Fatalities by Region Over a Period of Time
 
-```{r}
+```{r, message= FALSE, warning= FALSE}
 data_sum <- data %>%
   group_by(YEAR, REGION) %>%
   summarize(Total_Fatalities = sum(FATALITIES))
 
-regions_to_include <- c("Eastern Africa", "Northern Africa", "Middle East")
+regions_to_include <- c("Eastern Africa", "Northern Africa", "Middle East", "South Asia")
 data_filtered <- data_sum %>%
   filter(REGION %in% regions_to_include)
 
@@ -72,7 +76,8 @@ data_filtered |>
   geom_line(size = 1.5, linetype = "solid") +
   geom_text(aes(label = Total_Fatalities), vjust = -0.5, hjust = 0.5, size = 3) +
   theme_minimal() +
-  labs(x = "Year", y = "Fatalities per year", title = "Fatalities per year by Region", color = "Region")
+  labs(x = "Year", y = "Fatalities per Year", title = "Fatalities Over Time by Region", subtitle = "1997 - 2023", color = "Region") +
+  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic"))
 ```
 
 ### Interpretation:
