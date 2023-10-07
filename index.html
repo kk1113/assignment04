@@ -87,9 +87,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
-             <p>Kyle, Santiago </p>
+             <p>Kyle Kim </p>
+             <p>Santiago Rodriguez Bernal </p>
           </div>
   </div>
     
@@ -103,47 +104,65 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/KyleK/Desktop/DS/assignment04root/assignment04/assignment04data.xlsx"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"/Users/KyleK/Desktop/DS/assignment04root/assignment04/Data/Assignment04dataset.xlsx"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(data)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#how to make it collaborative and not on my desktop</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#need connect dataset to URL? </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#data set doesn't have a URL so the xlsx file must be downloaded from GitHub repo.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="assignment-04-data-visualization-quarto-and-git" class="level1">
 <h1>Assignment 04: Data Visualization, Quarto, and Git</h1>
 <section id="visualization-1-count-of-events-by-event-type" class="level2">
 <h2 class="anchored" data-anchor-id="visualization-1-count-of-events-by-event-type">Visualization #1: Count of Events by Event Type</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> DISORDER_TYPE), <span class="at">width =</span> .<span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>)) <span class="sc">+</span> </span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Disorders by Type"</span>, <span class="at">subtitle =</span> <span class="st">"1997 - 2023"</span>, <span class="at">y =</span> <span class="st">"Disorder Type"</span>, <span class="at">x =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate counts for each disorder type.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data_counts <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(DISORDER_TYPE) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">count =</span> <span class="fu">n</span>())</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>data_counts <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> DISORDER_TYPE, <span class="at">x =</span> count)) <span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">fill =</span> <span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#stat = "identity" asks R to use the y-value provided for the dependent variable.</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> count), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.1</span>, <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Disorders by Type"</span>, <span class="at">subtitle =</span> <span class="st">"1997 - 2023"</span>, <span class="at">y =</span> <span class="st">"Count"</span>, <span class="at">x =</span> <span class="st">"Disorder Type"</span>) <span class="sc">+</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>, <span class="dv">15000</span>) <span class="co">#modified x-axis limits to fit count labels onto plot. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <section id="interpretation" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation">Interpretation:</h3>
-<p>The graph shows the number of events recorded in the dataset by event type. Demonstrations are the most common event, with over 10000 instances recorded, followed by political violence, with over 4500 instances recorded.</p>
+<p>Each of these instances involves journalists and media workers: journalists, media editors, camera operators and photographers, news reporters/broadcasters, etc. The graph shows the number of disorders recorded in the dataset by disorder type. Demonstrations are the most common event, with over 10000 instances recorded, followed by political violence, with over 4500 instances recorded. Political violence; Demonstrations are the least common event, with under 200 instances recorded, followed by strategic developments with under 800 instances recorded.</p>
 </section>
 </section>
 <section id="visualization-2-fatalities-by-disorder-type" class="level2">
 <h2 class="anchored" data-anchor-id="visualization-2-fatalities-by-disorder-type">Visualization #2: Fatalities by Disorder Type</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DISORDER_TYPE, <span class="at">y =</span> FATALITIES, <span class="at">fill =</span> EVENT_TYPE)) <span class="sc">+</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Fatalities by Disorder Type"</span>, <span class="at">subtitle =</span> <span class="st">"1997 - 2023"</span>, <span class="at">x =</span> <span class="st">"Disorder Type"</span>, <span class="at">y =</span> <span class="st">"Fatalities"</span>, <span class="at">fill =</span> <span class="st">"Event Type"</span>) <span class="sc">+</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the sum of FATALITIES for each EVENT_TYPE and DISORDER_TYPE</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>event_counts <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(DISORDER_TYPE, EVENT_TYPE) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">event_fat =</span> <span class="fu">sum</span>(FATALITIES))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>event_counts <span class="sc">|&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> DISORDER_TYPE, <span class="at">y =</span> event_fat, <span class="at">fill =</span> EVENT_TYPE)) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="co">#angled text to fix overcrowding</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> event_fat), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labels showing the sum of FATALITIES for each EVENT_TYPE</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Fatalities by Disorder Type"</span>, <span class="at">subtitle =</span> <span class="st">"1997 - 2023"</span>, <span class="at">x =</span> <span class="st">"Disorder Type"</span>, <span class="at">y =</span> <span class="st">"Fatalities"</span>, <span class="at">fill =</span> <span class="st">"Event Type"</span>) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"italic"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <section id="interpretation-1" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation-1">Interpretation:</h3>
-<p>The data set also includes events, which are sub categories of disorders. This graph displays the number of fatalities by disorder type and their respective subcategories. Political violence is the type of disorder with the highest number of recorded fatalities, with explosions/remote violence and violence against civilians being the deadliest sub categories.</p>
+<p>This graphs shows which events that involved journalists and media workers were the deadliest. It shows the number of fatalities by disorder type and specifies the fatalities within each event type, which is a category of disorder. Political violence is the disorder type with the highest number of recorded fatalities. This column includes the two of the deadliest event types, explosions/remote violence and violence against civilians, with 1154 fatalities and 1010 fatalities, respectively. The demonstrations and political violence; demonstrations variables have the second and third most number of fatalities, respectively, recording under 300 deaths. The strategic developments variable recorded zero fatalities overall.</p>
 </section>
 </section>
 <section id="visualization-3-fatalities-by-region" class="level2">
@@ -160,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="interpretation-2" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation-2">Interpretation:</h3>
-<p>This graph illustrates the number of fatalities for each individual observation across different regions. The majority of observations are low-fatality incidents. The middle east displays a high density of incidents with less than 25 fatalities, whereas Eastern and Northern africa are the only regions where an incident with 100 or more fatalities took place.</p>
+<p>This graph presents the deadliest regions that involved journalists and media workers. It illustrates the number of fatalities for each individual observation across different regions. The majority of observations are lower-fatality incidents, recording 10 or fewer deaths. The middle east displays a high density of incidents with less than 25 fatalities, whereas Eastern and Northern Africa are the only regions where an incident with 100 or more fatalities took place.</p>
 </section>
 </section>
 <section id="visualization-4-fatalities-by-region-over-a-period-of-time" class="level2">
@@ -187,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="interpretation-3" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation-3">Interpretation:</h3>
-<p>The graph displays the fluctuations in fatalities per year in the Middle East, Northern Africa and Eastern Africa. All 3 regions had their deadliest years after 2015, although records for the Middle East prior to 2015 are absent from the data set. Northern Africa has the smallest peak out of all 3 regions, reaching 100 fatalities in 2019, whereas eastern Africa had relatively low fatalities up to 2020, and proceeded to peak at over 125 fatalities in 2022.</p>
+<p>The graph displays the total fatalities per year in Eastern Africa, Middle East, Northern Africa, and South Asia that resulted from disorders involving journalists and media workers. All four regions had their deadliest years after 2015, although records for the Middle East prior to 2015 are absent from the data set. Northern Africa has the smallest peak out of all four regions, reaching 100 fatalities in 2019, whereas eastern Africa had relatively low fatalities up to 2020, and proceeded to peak at over 125 fatalities in 2022.</p>
 </section>
 </section>
 </section>
