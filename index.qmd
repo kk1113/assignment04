@@ -40,7 +40,7 @@ data_counts %>%
 
 ### Interpretation:
 
-The graph shows the number of events recorded in the dataset by event type. Demonstrations are the most common event, with over 10000 instances recorded, followed by political violence, with over 4500 instances recorded.
+Each of these instances involves journalists and media workers: journalists, media editors, camera operators and photographers, news reporters/broadcasters, etc. The graph shows the number of disorders recorded in the dataset by disorder type. Demonstrations are the most common event, with over 10000 instances recorded, followed by political violence, with over 4500 instances recorded. Political violence; Demonstrations are the least common event, with under 200 instances recorded, followed by strategic developments with under 800 instances recorded. 
 
 ## Visualization #2: Fatalities by Disorder Type
 
