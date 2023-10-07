@@ -8,7 +8,7 @@ editor: visual
 ```{r, message= FALSE}
 library(tidyverse)
 library(readxl)
-data <- read_excel("/Users/KyleK/Desktop/DS/assignment04root/assignment04/assignment04data.xlsx")
+data <- read_excel("/Users/KyleK/Desktop/DS/assignment04root/assignment04/Data/journalists_Sep22.xlsx")
 
 view(data)
 #how to make it collaborative and not on my desktop
@@ -20,11 +20,23 @@ view(data)
 ## Visualization #1: Count of Events by Event Type
 
 ```{r}
-data |>
-  ggplot() +
-  geom_bar(mapping = aes(y = DISORDER_TYPE), width = .5, fill = "blue") +
-  theme(plot.title = element_text(face = "bold"), plot.subtitle = element_text(face = "italic")) + 
-  labs(title = "Number of Disorders by Type", subtitle = "1997 - 2023", y = "Disorder Type", x = "Count")
+library(ggplot2)
+# Calculate counts for each disorder type
+data_counts <- data %>%
+  group_by(DISORDER_TYPE) %>%
+  summarise(count = n())
+
+data_counts %>%
+  ggplot(aes(y = DISORDER_TYPE, x = count)) +
+  geom_bar(stat = "identity", width = 0.5, fill = "blue") +
+  geom_text(aes(label = count), vjust = -0.1, hjust = -0.5, size = 3, color = "black") +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(face = "italic")
+  ) + 
+  labs(title = "Number of Disorders by Type", subtitle = "1997 - 2023", y = "Count", x = "Disorder Type") +
+  xlim(0, 15000) #modified x-axis limits
+
 ```
 
 ### Interpretation:
