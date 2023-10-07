@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 # index.qmd data file path: 
 /Users/KyleK/Desktop/DS/assignment04/assignment04data.xlsx
+=======
+# Data for assignment 4
+/Users/santiagorodriguez/Desktop/Intro to data science/assignment04/Data/journalists_Sep22.xlsx
+>>>>>>> 05f42ff34f8940175952fd625917745d3a32e382
 
 # History files
 .Rhistory
@@ -53,4 +58,8 @@ docs/
 po/*~
 
 # RStudio Connect folder
+<<<<<<< HEAD
 rsconnect/
+=======
+rsconnect/
+>>>>>>> 05f42ff34f8940175952fd625917745d3a32e382
